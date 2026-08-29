@@ -22,9 +22,9 @@ const jbMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Merchant Cash Advance | Funding in as fast as 24 hours",
+  title: "MCA Debt Relief | Lower Payments, Less Debt",
   description:
-    "Get a merchant cash advance up to $500,000. Soft credit check, funding as fast as 24 hours. See your exact payback before you apply.",
+    "Struggling with merchant cash advance payments? We negotiate with your lenders to reduce what you owe and combine multiple positions into one manageable weekly payment.",
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;

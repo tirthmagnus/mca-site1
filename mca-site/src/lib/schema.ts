@@ -4,23 +4,19 @@ import { z } from "zod";
 // the static form or the chatbot. Never trust client-side validation alone,
 // this is what actually stops garbage/malicious payloads from reaching the DB.
 export const leadSchema = z.object({
+  firstName: z.string().trim().min(1).max(80),
+  lastName: z.string().trim().min(1).max(80),
   businessName: z.string().trim().min(2).max(120),
-  contactName: z.string().trim().min(2).max(120),
   phone: z
     .string()
     .trim()
     .regex(/^[0-9+()\-.\s]{7,20}$/, "Enter a valid phone number"),
   email: z.string().trim().email().max(160),
-  monthlyRevenue: z.enum([
-    "under_10k",
-    "10k_25k",
-    "25k_50k",
-    "50k_100k",
-    "over_100k",
-  ]),
-  timeInBusiness: z.enum(["under_6mo", "6mo_1yr", "1_3yr", "3yr_plus"]),
-  fundingAmount: z.coerce.number().min(1000).max(2_000_000),
-  industry: z.string().trim().min(2).max(80),
+  state: z.string().trim().min(2).max(56),
+  balanceRange: z.enum(["under_25k", "25k_50k", "50k_100k", "100k_250k", "250k_plus"]),
+  numberOfMcas: z.enum(["1", "2", "3", "4_plus"]),
+  paymentFrequency: z.enum(["daily", "weekly", "other"]),
+  monthlyRevenue: z.enum(["under_10k", "10k_25k", "25k_50k", "50k_100k", "over_100k"]),
   consentToContact: z.literal(true, {
     message: "You must consent to be contacted to submit this form",
   }),

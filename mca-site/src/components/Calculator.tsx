@@ -10,88 +10,87 @@ function formatUSD(n: number) {
   });
 }
 
-export default function Calculator({
-  onApply,
-}: {
-  onApply: (amount: number) => void;
-}) {
-  const [amount, setAmount] = useState(50000);
-  const [factorRate, setFactorRate] = useState(1.24);
-  const [termMonths, setTermMonths] = useState(9);
+// Rough, deliberately conservative illustration of typical MCA debt
+// settlement outcomes. Real savings depend entirely on number of
+// positions, lender, and how far behind the merchant is, this is
+// clearly labeled as an estimate everywhere it's shown.
+function estimateSavings(debt: number, weeklyPayment: number) {
+  const settlementSavingsRate = 0.32; // typical reduction off principal
+  const estimatedSettlement = debt * (1 - settlementSavingsRate);
+  const totalSaved = debt - estimatedSettlement;
 
-  const { payback, dailyRemittance, cost } = useMemo(() => {
-    const payback = amount * factorRate;
-    const cost = payback - amount;
-    // Rough business-day estimate: ~21 business days/month.
-    const businessDays = termMonths * 21;
-    const dailyRemittance = payback / businessDays;
-    return { payback, dailyRemittance, cost };
-  }, [amount, factorRate, termMonths]);
+  // New consolidated weekly payment: assume it drops to roughly 45%
+  // of current total weekly outflow once positions are combined.
+  const newWeeklyPayment = weeklyPayment * 0.45;
+  const weeklyRelief = weeklyPayment - newWeeklyPayment;
+
+  return { estimatedSettlement, totalSaved, newWeeklyPayment, weeklyRelief };
+}
+
+export default function Calculator({
+  onGetStarted,
+}: {
+  onGetStarted: (debt: number) => void;
+}) {
+  const [debt, setDebt] = useState(75000);
+  const [weeklyPayment, setWeeklyPayment] = useState(6000);
+
+  const { estimatedSettlement, totalSaved, newWeeklyPayment, weeklyRelief } =
+    useMemo(() => estimateSavings(debt, weeklyPayment), [debt, weeklyPayment]);
 
   return (
     <div className="rounded-2xl border border-line bg-white/95 p-6 shadow-[0_20px_60px_-25px_rgba(11,18,32,0.35)] sm:p-8">
       <div className="mb-6 flex items-baseline justify-between">
         <h2 className="display text-lg font-semibold text-ink">
-          See your numbers first
+          See what relief could look like
         </h2>
         <span className="tabular text-xs text-ink/50">estimate only</span>
       </div>
 
       <div className="space-y-5">
-        <Field label="Funding amount" value={formatUSD(amount)}>
+        <Field label="Total MCA debt owed" value={formatUSD(debt)}>
           <input
             type="range"
-            min={5000}
+            min={20000}
             max={500000}
-            step={1000}
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            step={5000}
+            value={debt}
+            onChange={(e) => setDebt(Number(e.target.value))}
             className="mt-2 w-full accent-amber"
-            aria-label="Funding amount"
+            aria-label="Total MCA debt owed"
           />
         </Field>
 
-        <Field label="Factor rate" value={factorRate.toFixed(2)}>
+        <Field label="Current weekly payment" value={formatUSD(weeklyPayment)}>
           <input
             type="range"
-            min={1.1}
-            max={1.5}
-            step={0.01}
-            value={factorRate}
-            onChange={(e) => setFactorRate(Number(e.target.value))}
+            min={500}
+            max={30000}
+            step={250}
+            value={weeklyPayment}
+            onChange={(e) => setWeeklyPayment(Number(e.target.value))}
             className="mt-2 w-full accent-amber"
-            aria-label="Factor rate"
-          />
-        </Field>
-
-        <Field label="Term" value={`${termMonths} months`}>
-          <input
-            type="range"
-            min={3}
-            max={18}
-            step={1}
-            value={termMonths}
-            onChange={(e) => setTermMonths(Number(e.target.value))}
-            className="mt-2 w-full accent-amber"
-            aria-label="Term in months"
+            aria-label="Current weekly payment across all positions"
           />
         </Field>
       </div>
 
-      <div className="mt-7 grid grid-cols-3 gap-3 border-t border-line pt-6">
-        <Stat label="Total payback" value={formatUSD(payback)} />
-        <Stat label="Cost of capital" value={formatUSD(cost)} />
-        <Stat label="Est. daily remittance" value={formatUSD(dailyRemittance)} />
+      <div className="mt-7 grid grid-cols-2 gap-3 border-t border-line pt-6">
+        <Stat label="Estimated new weekly payment" value={formatUSD(newWeeklyPayment)} />
+        <Stat label="Weekly cash freed up" value={formatUSD(weeklyRelief)} />
+        <Stat label="Estimated settled amount" value={formatUSD(estimatedSettlement)} />
+        <Stat label="Estimated total savings" value={formatUSD(totalSaved)} />
       </div>
 
       <button
-        onClick={() => onApply(amount)}
+        onClick={() => onGetStarted(debt)}
         className="mt-7 w-full rounded-lg bg-ink px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-ink-2 focus-visible:outline focus-visible:outline-3 focus-visible:outline-amber"
       >
-        Get a real quote for {formatUSD(amount)} &rarr;
+        Get my free debt assessment &rarr;
       </button>
       <p className="mt-3 text-center text-xs text-ink/45">
-        Estimate only, not an offer. A soft credit check won&apos;t affect your score.
+        Illustration only, not a guarantee. Actual outcomes depend on your lenders and
+        specific situation. Free consultation, no obligation.
       </p>
     </div>
   );
