@@ -9,6 +9,7 @@ import ChatWidget from "@/components/ChatWidget";
 import { LeadModalProvider, useLeadModal } from "@/components/LeadModalContext";
 import {
   ProblemRecognition,
+  WhoWeHelp,
   Solutions,
   HowItWorks,
   TrustSection,
@@ -34,6 +35,7 @@ function HomeContent() {
       <Header />
       <Hero onContinue={handleContinue} />
       <ProblemRecognition />
+      <WhoWeHelp />
       <Solutions />
       <HowItWorks />
       <TrustSection />

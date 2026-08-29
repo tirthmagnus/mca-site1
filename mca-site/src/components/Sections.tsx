@@ -5,7 +5,7 @@ import {
   RefreshCw, MessagesSquare, Map, Combine, HandCoins,
   ClipboardList, Search, Target, Handshake,
   ShieldCheck, Sparkles, Eye, Lock, Building2, UserCheck,
-  BookOpen,
+  BookOpen, Camera,
 } from "lucide-react";
 import { useLeadModal } from "./LeadModalContext";
 
@@ -60,12 +60,12 @@ const WHY_US = [
 ];
 
 const EDUCATION_ARTICLES = [
-  { title: "What Is MCA Debt Relief?", body: "An overview of what debt relief actually means for a business carrying merchant cash advance obligations, and how it differs from a loan modification." },
-  { title: "MCA Settlement vs. MCA Consolidation", body: "Settlement negotiates down what's owed. Consolidation combines multiple positions into one payment. They solve different problems." },
-  { title: "What Happens If You Default on an MCA?", body: "MCA agreements often include a confession of judgment, a clause that can let a funder pursue collection quickly, without a standard court proceeding." },
-  { title: "What Is MCA Stacking?", body: "Taking on a new advance while still repaying existing ones. Each funder draws from the same daily revenue, and the combined effective cost compounds fast." },
-  { title: "Can MCA Payments Be Restructured?", body: "Sometimes, subject to your funder's agreement. It depends on your specific contracts, balances, and how many positions are involved." },
-  { title: "What Is a UCC-1 Filing?", body: "A public filing that gives your MCA funder a legal claim on business assets or receivables. It doesn't freeze your accounts by itself, but it affects your standing with other lenders." },
+  { title: "What Is MCA Debt Relief?", body: "An overview of what debt relief actually means for a business carrying merchant cash advance obligations, and how it differs from a loan modification.", href: null },
+  { title: "MCA Settlement vs. MCA Consolidation", body: "Settlement negotiates down what's owed. Consolidation combines multiple positions into one payment. They solve different problems.", href: "/mca-debt-settlement" },
+  { title: "What Happens If You Default on an MCA?", body: "MCA agreements often include a confession of judgment, a clause that can let a funder pursue collection quickly, without a standard court proceeding.", href: "/what-happens-when-you-default" },
+  { title: "What Is MCA Stacking?", body: "Taking on a new advance while still repaying existing ones. Each funder draws from the same daily revenue, and the combined effective cost compounds fast.", href: null },
+  { title: "Can MCA Payments Be Restructured?", body: "Sometimes, subject to your funder's agreement. It depends on your specific contracts, balances, and how many positions are involved.", href: "/mca-debt-restructuring" },
+  { title: "What Is a UCC-1 Filing?", body: "A public filing that gives your MCA funder a legal claim on business assets or receivables. It doesn't freeze your accounts by itself, but it affects your standing with other lenders.", href: null },
 ];
 
 const FAQS = [
@@ -78,6 +78,43 @@ const FAQS = [
   { q: "Does a free consultation obligate me to enroll?", a: "No. The case review is free and confidential, and there's no obligation to move forward afterward." },
   { q: "What information should I have ready?", a: "Your MCA agreements, recent statements showing payment activity, and a general sense of your current monthly revenue help us give you an accurate picture fastest." },
 ];
+
+const WHO_WE_HELP = ["Restaurants", "Trucking & Logistics", "Construction", "Medical Practices", "Retail", "Professional Services"];
+
+// lucide-react dropped brand-specific icons a while back, these are
+// minimal generic glyphs standing in for each platform, not official logos.
+function FacebookIcon(props: { size?: number }) {
+  return (
+    <svg width={props.size ?? 16} height={props.size ?? 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h2.5l.5-3H14V9.5c0-.3.2-.5.5-.5H14z" />
+    </svg>
+  );
+}
+function InstagramIcon(props: { size?: number }) {
+  return (
+    <svg width={props.size ?? 16} height={props.size ?? 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <rect x="4" y="4" width="16" height="16" rx="4" />
+      <circle cx="12" cy="12" r="3.2" />
+      <circle cx="16.2" cy="7.8" r="0.6" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function LinkedinIcon(props: { size?: number }) {
+  return (
+    <svg width={props.size ?? 16} height={props.size ?? 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <rect x="4" y="4" width="16" height="16" rx="2.5" />
+      <circle cx="8.2" cy="8.5" r="0.9" fill="currentColor" stroke="none" />
+      <path d="M8.2 11v6M12 17v-3.5c0-1.4 1-2.2 2.2-2.2s1.8.8 1.8 2.2V17" />
+    </svg>
+  );
+}
+function XIcon(props: { size?: number }) {
+  return (
+    <svg width={props.size ?? 16} height={props.size ?? 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M5 5l14 14M19 5L5 19" />
+    </svg>
+  );
+}
 
 function InlineCTA({ label }: { label: string }) {
   const openModal = useLeadModal();
@@ -107,6 +144,27 @@ export function ProblemRecognition() {
         ))}
       </div>
       <InlineCTA label="See if you may have options →" />
+    </section>
+  );
+}
+
+export function WhoWeHelp() {
+  return (
+    <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+      <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-amber/40 bg-amber/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber">
+        Photo slots — drop in real, licensed photography here
+      </div>
+      <h2 className="display text-2xl font-bold text-ink">Real businesses, real relief</h2>
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        {WHO_WE_HELP.map((label) => (
+          <div key={label} className="group aspect-square overflow-hidden rounded-xl border border-line bg-gradient-to-br from-paper-2 to-line/40">
+            <div className="flex h-full flex-col items-center justify-center gap-2 p-3 text-center transition-colors group-hover:bg-ink/5">
+              <Camera className="text-ink/25" size={28} strokeWidth={1.5} />
+              <span className="text-xs font-medium text-ink/50">{label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
@@ -207,6 +265,27 @@ export function WhyChooseUs() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
       <h2 className="display text-3xl font-bold text-ink">Why choose us</h2>
+      <p className="mt-4 max-w-3xl leading-relaxed text-ink/70">
+        Our team focuses specifically on{" "}
+        <a href="/mca-debt-restructuring" className="font-medium text-ink underline decoration-amber decoration-2 underline-offset-2 hover:text-amber">
+          MCA debt restructuring
+        </a>{" "}
+        and long-term financial relief, building a plan around your actual cash flow, not a
+        generic template. Our{" "}
+        <a href="/mca-debt-settlement" className="font-medium text-ink underline decoration-amber decoration-2 underline-offset-2 hover:text-amber">
+          MCA debt settlement
+        </a>{" "}
+        specialists work directly with your lenders to negotiate terms that give your
+        business breathing room. If payments have already slipped, start with{" "}
+        <a href="/what-happens-when-you-default" className="font-medium text-ink underline decoration-amber decoration-2 underline-offset-2 hover:text-amber">
+          what happens when you default
+        </a>
+        , and if you're{" "}
+        <a href="/mca-lawsuit" className="font-medium text-ink underline decoration-amber decoration-2 underline-offset-2 hover:text-amber">
+          facing an MCA lawsuit
+        </a>
+        , learn your options there before anything else.
+      </p>
       <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {WHY_US.map((w) => (
           <div key={w.title} className="lift-card rounded-xl border border-transparent p-2">
@@ -227,13 +306,25 @@ export function Education() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <h2 className="display text-3xl font-bold text-ink">Understand your MCA options</h2>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {EDUCATION_ARTICLES.map((a) => (
-            <div key={a.title} className="lift-card rounded-xl border border-line bg-white p-5">
-              <BookOpen className="text-amber" size={22} strokeWidth={1.75} />
-              <h3 className="display mt-3 text-base font-semibold text-ink">{a.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{a.body}</p>
-            </div>
-          ))}
+          {EDUCATION_ARTICLES.map((a) => {
+            const CardInner = (
+              <>
+                <BookOpen className="text-amber" size={22} strokeWidth={1.75} />
+                <h3 className="display mt-3 text-base font-semibold text-ink">{a.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{a.body}</p>
+                {a.href && <div className="mt-2.5 text-xs font-semibold text-amber">Read more &rarr;</div>}
+              </>
+            );
+            return a.href ? (
+              <a key={a.title} href={a.href} className="lift-card block rounded-xl border border-line bg-white p-5">
+                {CardInner}
+              </a>
+            ) : (
+              <div key={a.title} className="lift-card rounded-xl border border-line bg-white p-5">
+                {CardInner}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -294,11 +385,31 @@ export function Footer() {
     ["Communication Consent", "/communication-consent"],
     ["Legal Disclaimer", "/legal-disclaimer"],
   ];
+  const socials = [
+    [FacebookIcon, "Facebook"],
+    [InstagramIcon, "Instagram"],
+    [LinkedinIcon, "LinkedIn"],
+    [XIcon, "X"],
+  ] as const;
   return (
     <footer className="border-t border-line bg-ink py-14 text-white/60">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="display text-lg font-bold text-white">
-          MCA<span className="text-amber">REVIVE</span>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="display text-lg font-bold text-white">
+            MCA<span className="text-amber">REVIVE</span>
+          </div>
+          <div className="flex items-center gap-3">
+            {socials.map(([Icon, label]) => (
+              <a
+                key={label}
+                href="#"
+                aria-label={`${label} (placeholder link)`}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/50 transition-colors hover:border-amber hover:text-amber"
+              >
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
         </div>
         <p className="mt-4 max-w-2xl text-xs leading-relaxed">
           [LEGAL COPY TO BE REVIEWED BY COMPANY COUNSEL] — MCAREVIVE is a business debt

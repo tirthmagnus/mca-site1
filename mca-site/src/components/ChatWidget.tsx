@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 
 type Message = { role: "user" | "assistant"; content: string };
 
@@ -15,12 +16,21 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [leadCaptured, setLeadCaptured] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const conversationId = useRef<string>(crypto.randomUUID());
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, open]);
+
+  // Proactive nudge: most visitors never notice a static chat bubble.
+  // Surface a short invite a few seconds in, dismissible, gone for good
+  // once they've opened the chat once.
+  useEffect(() => {
+    const t = setTimeout(() => setShowTooltip(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   async function send() {
     const text = input.trim();
@@ -59,15 +69,30 @@ export default function ChatWidget() {
 
   return (
     <>
+      {!open && showTooltip && (
+        <div className="fixed bottom-24 right-5 z-50 flex max-w-[220px] items-start gap-2 rounded-xl bg-white px-4 py-3 text-sm text-ink shadow-[0_10px_30px_-10px_rgba(11,18,32,0.3)] animate-[popIn_0.2s_ease-out] sm:bottom-28">
+          <span>👋 Dealing with MCA payments? I can help, just ask.</span>
+          <button
+            onClick={() => setShowTooltip(false)}
+            aria-label="Dismiss"
+            className="text-ink/40 hover:text-ink"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => {
+          setOpen((o) => !o);
+          setShowTooltip(false);
+        }}
         aria-label={open ? "Close chat" : "Open chat"}
-        className={`fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white shadow-[0_10px_30px_-10px_rgba(11,18,32,0.5)] transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-3 focus-visible:outline-amber sm:h-16 sm:w-16 ${
+        className={`fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-amber text-ink shadow-[0_10px_30px_-10px_rgba(11,18,32,0.5)] transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-3 focus-visible:outline-ink sm:h-16 sm:w-16 ${
           open ? "" : "chat-bubble-pulse"
         }`}
       >
         {!open && (
-          <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-amber" />
+          <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-ink" />
         )}
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">

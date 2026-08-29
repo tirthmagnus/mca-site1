@@ -39,6 +39,14 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
+/* Clears the fixed mobile "Call Now / Free Case Review" bar so it never
+   sits on top of footer content or the last section on small screens. */
+@media (max-width: 639px) {
+  body {
+    padding-bottom: 3.5rem;
+  }
+}
+
 h1, h2, h3, h4, .display {
   font-family: var(--font-display), system-ui, sans-serif;
 }
