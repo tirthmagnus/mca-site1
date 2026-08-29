@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b1220;
+  --ink-2: #131c2e;
+  --paper: #f7f8fa;
+  --paper-2: #eceef2;
+  --amber: #f5a524;
+  --amber-2: #ffc65c;
+  --line: #d8dce3;
+  --line-dark: #26324a;
+  --ok: #2e8b57;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-amber: var(--amber);
+  --color-amber-2: var(--amber-2);
+  --color-line: var(--line);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jbmono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: var(--font-display), system-ui, sans-serif;
+}
+
+.tabular {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible keyboard focus everywhere, no exceptions */
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
