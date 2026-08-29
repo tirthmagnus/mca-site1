@@ -4,7 +4,9 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import LeadForm from "@/components/LeadForm";
+import SavingsCalculator from "@/components/SavingsCalculator";
 import ChatWidget from "@/components/ChatWidget";
+import { LeadModalProvider, useLeadModal } from "@/components/LeadModalContext";
 import {
   ProblemRecognition,
   Solutions,
@@ -18,8 +20,9 @@ import {
   Footer,
 } from "@/components/Sections";
 
-export default function Home() {
+function HomeContent() {
   const [prefill, setPrefill] = useState<{ balanceRange?: string; numberOfMcas?: string }>({});
+  const openModal = useLeadModal();
 
   function handleContinue(balanceRange: string, numberOfMcas: string) {
     setPrefill({ balanceRange, numberOfMcas });
@@ -35,6 +38,7 @@ export default function Home() {
       <HowItWorks />
       <TrustSection />
       <ClientStories />
+      <SavingsCalculator onGetStarted={openModal} />
       <WhyChooseUs />
 
       <section className="mx-auto max-w-3xl px-5 py-20 sm:px-8">
@@ -49,5 +53,13 @@ export default function Home() {
       <Footer />
       <ChatWidget />
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <LeadModalProvider>
+      <HomeContent />
+    </LeadModalProvider>
   );
 }

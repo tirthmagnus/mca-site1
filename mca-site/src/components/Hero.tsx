@@ -15,7 +15,10 @@ export default function Hero({
           <p className="tabular mb-5 inline-block rounded-full border border-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber">
             Confidential consultation, no obligation
           </p>
-          <h1 className="display text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-[3.2rem]">
+          <p className="display text-lg font-semibold text-amber sm:text-xl">
+            Break free from the MCA payment cycle.
+          </p>
+          <h1 className="display mt-2 text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-[3.2rem]">
             Merchant cash advance payments taking over your cash flow?
           </h1>
           <p className="mt-5 max-w-lg text-lg text-white/70">

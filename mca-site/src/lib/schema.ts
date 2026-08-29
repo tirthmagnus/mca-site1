@@ -20,7 +20,7 @@ export const leadSchema = z.object({
   consentToContact: z.literal(true, {
     message: "You must consent to be contacted to submit this form",
   }),
-  source: z.enum(["form", "chatbot"]).default("form"),
+  source: z.enum(["form", "chatbot", "quick_modal"]).default("form"),
   // Honeypot field: real users never fill this in (it's visually hidden).
   // Deliberately NOT constrained to empty here: if it were, a bot-filled
   // value would fail validation with a 400, telling the bot its
@@ -31,6 +31,27 @@ export const leadSchema = z.object({
 });
 
 export type Lead = z.infer<typeof leadSchema>;
+
+// A short "just call me back" capture used by the header/CTA popup modal,
+// for visitors who don't want to go through the full 5-step case review
+// form. Deliberately minimal, name + phone + business, that's enough for
+// a consultant to call and take it from there. Still fully validated,
+// never trust the client here either.
+export const quickLeadSchema = z.object({
+  firstName: z.string().trim().min(1).max(80),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+()\-.\s]{7,20}$/, "Enter a valid phone number"),
+  businessName: z.string().trim().min(2).max(120),
+  consentToContact: z.literal(true, {
+    message: "You must consent to be contacted to submit this form",
+  }),
+  source: z.literal("quick_modal").default("quick_modal"),
+  companyWebsite: z.string().max(200).optional().default(""),
+});
+
+export type QuickLead = z.infer<typeof quickLeadSchema>;
 
 export const chatMessageSchema = z.object({
   message: z.string().trim().min(1).max(2000),

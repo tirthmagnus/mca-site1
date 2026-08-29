@@ -6,7 +6,7 @@ type Message = { role: "user" | "assistant"; content: string };
 
 const GREETING: Message = {
   role: "assistant",
-  content: "Hey! Looking into funding for your business? I can get you pointed in the right direction, what's your business called?",
+  content: "Hi, dealing with MCA payments that feel like too much? I can get some quick info and have a consultant call you. What's your business called?",
 };
 
 export default function ChatWidget() {
@@ -62,8 +62,13 @@ export default function ChatWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white shadow-[0_10px_30px_-10px_rgba(11,18,32,0.5)] transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-3 focus-visible:outline-amber sm:h-16 sm:w-16"
+        className={`fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white shadow-[0_10px_30px_-10px_rgba(11,18,32,0.5)] transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-3 focus-visible:outline-amber sm:h-16 sm:w-16 ${
+          open ? "" : "chat-bubble-pulse"
+        }`}
       >
+        {!open && (
+          <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-amber" />
+        )}
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

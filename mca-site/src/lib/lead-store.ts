@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { Lead } from "./schema";
+import type { Lead, QuickLead } from "./schema";
 
 // ---------------------------------------------------------------------
 // LEAD STORAGE
@@ -18,7 +18,7 @@ import type { Lead } from "./schema";
 const DATA_DIR = path.join(process.cwd(), "data");
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
 
-export type StoredLead = Lead & {
+export type StoredLead = (Lead | QuickLead) & {
   id: string;
   createdAt: string;
   ip: string;
@@ -34,7 +34,7 @@ async function ensureStore() {
 }
 
 export async function saveLead(
-  lead: Lead,
+  lead: Lead | QuickLead,
   meta: { ip: string }
 ): Promise<StoredLead> {
   await ensureStore();

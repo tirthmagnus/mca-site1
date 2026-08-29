@@ -1,25 +1,36 @@
+"use client";
+
+import {
+  Repeat, Layers, TrendingDown, PhoneCall, FileWarning, Clock,
+  RefreshCw, MessagesSquare, Map, Combine, HandCoins,
+  ClipboardList, Search, Target, Handshake,
+  ShieldCheck, Sparkles, Eye, Lock, Building2, UserCheck,
+  BookOpen,
+} from "lucide-react";
+import { useLeadModal } from "./LeadModalContext";
+
 const PROBLEMS = [
-  { title: "Daily ACH Withdrawals", body: "Payments pulled from your account every business day, regardless of how sales actually came in that day." },
-  { title: "Multiple Stacked MCAs", body: "More than one advance running at the same time, each one drawing from the same daily revenue." },
-  { title: "Declining Revenue", body: "A slower season or a rough stretch makes fixed daily payments feel heavier every week." },
-  { title: "Collection Pressure", body: "Calls, letters, or a lender pushing for payment faster than your cash flow can support." },
-  { title: "UCC Filings", body: "A lender has filed a public claim (a UCC-1) against your business assets or receivables tied to the advance." },
-  { title: "Falling Behind", body: "Payments that were manageable at first are no longer lining up with what your business brings in." },
+  { icon: Repeat, title: "Daily ACH Withdrawals", body: "Payments pulled from your account every business day, regardless of how sales actually came in that day." },
+  { icon: Layers, title: "Multiple Stacked MCAs", body: "More than one advance running at the same time, each one drawing from the same daily revenue." },
+  { icon: TrendingDown, title: "Declining Revenue", body: "A slower season or a rough stretch makes fixed daily payments feel heavier every week." },
+  { icon: PhoneCall, title: "Collection Pressure", body: "Calls, letters, or a lender pushing for payment faster than your cash flow can support." },
+  { icon: FileWarning, title: "UCC Filings", body: "A lender has filed a public claim (a UCC-1) against your business assets or receivables tied to the advance." },
+  { icon: Clock, title: "Falling Behind", body: "Payments that were manageable at first are no longer lining up with what your business brings in." },
 ];
 
 const SOLUTIONS = [
-  { title: "Restructure Payments", body: "Explore whether payment amount, frequency, or schedule may be modified, subject to your funder's agreement." },
-  { title: "Negotiate MCA Obligations", body: "Open a direct conversation with your MCA provider about your current situation and possible adjusted terms." },
-  { title: "Develop a Resolution Strategy", body: "Build a plan specific to your balances, agreements, and cash flow, not a one-size-fits-all approach." },
-  { title: "Stacked MCA Relief", body: "When multiple positions are involved, work toward a combined approach across all of them rather than one at a time." },
-  { title: "Business Debt Settlement", body: "Where appropriate, pursue a negotiated resolution on outstanding balances with your funders." },
+  { icon: RefreshCw, title: "Restructure Payments", body: "Explore whether payment amount, frequency, or schedule may be modified, subject to your funder's agreement." },
+  { icon: MessagesSquare, title: "Negotiate MCA Obligations", body: "Open a direct conversation with your MCA provider about your current situation and possible adjusted terms." },
+  { icon: Map, title: "Develop a Resolution Strategy", body: "Build a plan specific to your balances, agreements, and cash flow, not a one-size-fits-all approach." },
+  { icon: Combine, title: "Stacked MCA Relief", body: "When multiple positions are involved, work toward a combined approach across all of them rather than one at a time." },
+  { icon: HandCoins, title: "Business Debt Settlement", body: "Where appropriate, pursue a negotiated resolution on outstanding balances with your funders." },
 ];
 
 const STEPS = [
-  { title: "Free Case Review", body: "We gather information about your business, your MCA obligations, current payments, and financial situation." },
-  { title: "MCA Analysis", body: "We review your agreements, balances, payment history, and business cash flow in detail." },
-  { title: "Resolution Strategy", body: "We map out potential approaches based specifically on your business's circumstances." },
-  { title: "Negotiation & Resolution", body: "We communicate with your MCA providers and pursue an agreed resolution where possible." },
+  { icon: ClipboardList, title: "Free Case Review", body: "We gather information about your business, your MCA obligations, current payments, and financial situation." },
+  { icon: Search, title: "MCA Analysis", body: "We review your agreements, balances, payment history, and business cash flow in detail." },
+  { icon: Target, title: "Resolution Strategy", body: "We map out potential approaches based specifically on your business's circumstances." },
+  { icon: Handshake, title: "Negotiation & Resolution", body: "We communicate with your MCA providers and pursue an agreed resolution where possible." },
 ];
 
 const TRUST_STATS = [
@@ -34,30 +45,18 @@ const TRUST_STATS = [
 // percentages: the FTC has specifically pursued debt relief companies
 // for exactly that pattern, so even placeholder copy stays qualitative.
 const CLIENT_STORIES = [
-  {
-    industry: "Restaurant",
-    numberOfMcas: "3 positions",
-    quote: "One weekly payment instead of three daily withdrawals changed how I could plan payroll and inventory.",
-  },
-  {
-    industry: "Trucking",
-    numberOfMcas: "2 positions",
-    quote: "Having someone negotiate directly with my funders meant I could focus on keeping trucks on the road.",
-  },
-  {
-    industry: "Medical practice",
-    numberOfMcas: "4 positions",
-    quote: "I didn't think there was a path that didn't end in closing. There was, and I had help through every step.",
-  },
+  { industry: "Restaurant", numberOfMcas: "3 positions", quote: "One weekly payment instead of three daily withdrawals changed how I could plan payroll and inventory." },
+  { industry: "Trucking", numberOfMcas: "2 positions", quote: "Having someone negotiate directly with my funders meant I could focus on keeping trucks on the road." },
+  { industry: "Medical practice", numberOfMcas: "4 positions", quote: "I didn't think there was a path that didn't end in closing. There was, and I had help through every step." },
 ];
 
 const WHY_US = [
-  { title: "MCA-Focused Experience", body: "We work specifically with merchant cash advance obligations, not general consumer debt." },
-  { title: "Customized Strategies", body: "Your revenue, agreements, and balances shape the approach, not a template." },
-  { title: "Transparent Communication", body: "You know what's happening with your case and why, at every stage." },
-  { title: "Confidential Consultations", body: "Your situation stays private, reviewed only by the team working your case." },
-  { title: "Business-First Approach", body: "The goal is keeping your business operating, not just settling a number." },
-  { title: "Direct Human Support", body: "A real person on your case, not a ticket queue." },
+  { icon: ShieldCheck, title: "MCA-Focused Experience", body: "We work specifically with merchant cash advance obligations, not general consumer debt." },
+  { icon: Sparkles, title: "Customized Strategies", body: "Your revenue, agreements, and balances shape the approach, not a template." },
+  { icon: Eye, title: "Transparent Communication", body: "You know what's happening with your case and why, at every stage." },
+  { icon: Lock, title: "Confidential Consultations", body: "Your situation stays private, reviewed only by the team working your case." },
+  { icon: Building2, title: "Business-First Approach", body: "The goal is keeping your business operating, not just settling a number." },
+  { icon: UserCheck, title: "Direct Human Support", body: "A real person on your case, not a ticket queue." },
 ];
 
 const EDUCATION_ARTICLES = [
@@ -80,18 +79,34 @@ const FAQS = [
   { q: "What information should I have ready?", a: "Your MCA agreements, recent statements showing payment activity, and a general sense of your current monthly revenue help us give you an accurate picture fastest." },
 ];
 
+function InlineCTA({ label }: { label: string }) {
+  const openModal = useLeadModal();
+  return (
+    <div className="mt-10 flex justify-center">
+      <button
+        onClick={openModal}
+        className="rounded-lg border-2 border-ink bg-transparent px-6 py-3 text-sm font-semibold text-ink transition-all hover:bg-ink hover:text-white hover:shadow-lg"
+      >
+        {label}
+      </button>
+    </div>
+  );
+}
+
 export function ProblemRecognition() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
       <h2 className="display text-3xl font-bold text-ink">Is this happening to your business?</h2>
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {PROBLEMS.map((p) => (
-          <div key={p.title} className="rounded-xl border border-line bg-white p-5">
-            <h3 className="display text-base font-semibold text-ink">{p.title}</h3>
+          <div key={p.title} className="lift-card rounded-xl border border-line bg-white p-5">
+            <p.icon className="text-amber" size={26} strokeWidth={1.75} />
+            <h3 className="display mt-3 text-base font-semibold text-ink">{p.title}</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{p.body}</p>
           </div>
         ))}
       </div>
+      <InlineCTA label="See if you may have options →" />
     </section>
   );
 }
@@ -107,12 +122,14 @@ export function Solutions() {
         </p>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SOLUTIONS.map((s) => (
-            <div key={s.title} className="rounded-xl border border-line bg-white p-5">
-              <h3 className="display text-base font-semibold text-ink">{s.title}</h3>
+            <div key={s.title} className="lift-card rounded-xl border border-line bg-white p-5">
+              <s.icon className="text-amber" size={26} strokeWidth={1.75} />
+              <h3 className="display mt-3 text-base font-semibold text-ink">{s.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{s.body}</p>
             </div>
           ))}
         </div>
+        <InlineCTA label="Talk to a consultant →" />
       </div>
     </section>
   );
@@ -122,11 +139,16 @@ export function HowItWorks() {
   return (
     <section id="how" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
       <h2 className="display text-3xl font-bold text-ink">How it works</h2>
-      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="relative mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Connecting line, desktop only */}
+        <div className="pointer-events-none absolute left-0 right-0 top-6 hidden h-0.5 bg-line lg:block" />
         {STEPS.map((s, i) => (
-          <div key={s.title} className="border-t-2 border-amber pt-4">
-            <div className="tabular text-sm text-ink/40">{String(i + 1).padStart(2, "0")}</div>
-            <h3 className="display mt-2 text-lg font-semibold text-ink">{s.title}</h3>
+          <div key={s.title} className="relative">
+            <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-amber bg-white shadow-sm">
+              <s.icon className="text-ink" size={22} strokeWidth={1.75} />
+            </div>
+            <div className="tabular mt-3 text-xs font-semibold text-ink/40">{String(i + 1).padStart(2, "0")}</div>
+            <h3 className="display mt-1 text-lg font-semibold text-ink">{s.title}</h3>
             <p className="mt-1.5 text-sm text-ink/60">{s.body}</p>
           </div>
         ))}
@@ -165,7 +187,7 @@ export function ClientStories() {
         <h2 className="display text-3xl font-bold text-ink">What clients say</h2>
         <div className="mt-8 grid gap-5 sm:grid-cols-3">
           {CLIENT_STORIES.map((c) => (
-            <div key={c.industry} className="rounded-xl border border-line bg-white p-5">
+            <div key={c.industry} className="lift-card rounded-xl border border-line bg-white p-5">
               <div className="text-xs font-semibold uppercase tracking-wide text-ink/40">
                 {c.industry} &middot; {c.numberOfMcas}
               </div>
@@ -187,12 +209,14 @@ export function WhyChooseUs() {
       <h2 className="display text-3xl font-bold text-ink">Why choose us</h2>
       <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {WHY_US.map((w) => (
-          <div key={w.title}>
-            <h3 className="display text-base font-semibold text-ink">{w.title}</h3>
+          <div key={w.title} className="lift-card rounded-xl border border-transparent p-2">
+            <w.icon className="text-amber" size={24} strokeWidth={1.75} />
+            <h3 className="display mt-3 text-base font-semibold text-ink">{w.title}</h3>
             <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{w.body}</p>
           </div>
         ))}
       </div>
+      <InlineCTA label="Request my free case review →" />
     </section>
   );
 }
@@ -204,8 +228,9 @@ export function Education() {
         <h2 className="display text-3xl font-bold text-ink">Understand your MCA options</h2>
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {EDUCATION_ARTICLES.map((a) => (
-            <div key={a.title} className="rounded-xl border border-line bg-white p-5">
-              <h3 className="display text-base font-semibold text-ink">{a.title}</h3>
+            <div key={a.title} className="lift-card rounded-xl border border-line bg-white p-5">
+              <BookOpen className="text-amber" size={22} strokeWidth={1.75} />
+              <h3 className="display mt-3 text-base font-semibold text-ink">{a.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-ink/60">{a.body}</p>
             </div>
           ))}
@@ -222,7 +247,7 @@ export function FAQ() {
       <div className="mt-8 divide-y divide-line rounded-2xl border border-line bg-white">
         {FAQS.map((f) => (
           <details key={f.q} className="group px-6 py-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between font-semibold text-ink">
+            <summary className="flex cursor-pointer list-none items-center justify-between font-semibold text-ink transition-colors hover:text-amber">
               {f.q}
               <span className="text-amber transition-transform group-open:rotate-45">+</span>
             </summary>
@@ -235,6 +260,7 @@ export function FAQ() {
 }
 
 export function FinalCTA() {
+  const openModal = useLeadModal();
   return (
     <section className="bg-ink py-20 text-center text-white">
       <div className="mx-auto max-w-2xl px-5 sm:px-8">
@@ -243,11 +269,14 @@ export function FinalCTA() {
           Tell us what&apos;s happening with your MCA payments and learn what options may be available.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <a href="#apply" className="rounded-lg bg-amber px-6 py-3.5 text-sm font-semibold text-ink hover:bg-amber-2">
+          <button
+            onClick={openModal}
+            className="rounded-lg bg-amber px-6 py-3.5 text-sm font-semibold text-ink transition-all hover:bg-amber-2 hover:shadow-lg"
+          >
             Request a Free Case Review
-          </a>
-          <a href="tel:+10000000000" className="rounded-lg border border-white/25 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/10">
-            Speak With Our Team: [PHONE]
+          </button>
+          <a href="tel:+18885551234" className="rounded-lg border border-white/25 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+            Speak With Our Team: (888) 555-1234
           </a>
         </div>
       </div>
@@ -256,28 +285,33 @@ export function FinalCTA() {
 }
 
 export function Footer() {
+  const links = [
+    ["Privacy Policy", "/privacy-policy"],
+    ["Terms of Use", "/terms-of-use"],
+    ["Cookie Policy", "/cookie-policy"],
+    ["Accessibility Statement", "/accessibility-statement"],
+    ["Business Debt Services Disclaimer", "/business-debt-services-disclaimer"],
+    ["Communication Consent", "/communication-consent"],
+    ["Legal Disclaimer", "/legal-disclaimer"],
+  ];
   return (
     <footer className="border-t border-line bg-ink py-14 text-white/60">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="display text-lg font-bold text-white">
-          [COMPANY <span className="text-amber">NAME]</span>
+          MCA<span className="text-amber">REVIVE</span>
         </div>
         <p className="mt-4 max-w-2xl text-xs leading-relaxed">
-          [LEGAL COPY TO BE REVIEWED BY COMPANY COUNSEL] — [Company Name] is a business debt
+          [LEGAL COPY TO BE REVIEWED BY COMPANY COUNSEL] — MCAREVIVE is a business debt
           advisory service. It is not a law firm, government agency, or lender unless
           explicitly stated otherwise, and does not guarantee specific settlement amounts,
           payment reductions, or timelines. Individual results vary. Fees for services, if
           any, are disclosed in writing before any agreement begins.
         </p>
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs">
-          <a href="#" className="hover:text-white">Privacy Policy</a>
-          <a href="#" className="hover:text-white">Terms of Use</a>
-          <a href="#" className="hover:text-white">Cookie Policy</a>
-          <a href="#" className="hover:text-white">Accessibility Statement</a>
-          <a href="#" className="hover:text-white">Business Debt Services Disclaimer</a>
-          <a href="#" className="hover:text-white">Communication Consent</a>
-          <a href="#" className="hover:text-white">Legal Disclaimer</a>
-          <a href="tel:+10000000000" className="hover:text-white">[PHONE]</a>
+          {links.map(([label, href]) => (
+            <a key={href} href={href} className="transition-colors hover:text-white">{label}</a>
+          ))}
+          <a href="tel:+18885551234" className="transition-colors hover:text-white">(888) 555-1234</a>
         </div>
       </div>
     </footer>

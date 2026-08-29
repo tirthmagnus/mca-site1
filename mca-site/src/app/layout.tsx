@@ -22,9 +22,9 @@ const jbMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCA Debt Relief | Lower Payments, Less Debt",
+  title: "MCAREVIVE | MCA Debt Relief & Restructuring",
   description:
-    "Struggling with merchant cash advance payments? We negotiate with your lenders to reduce what you owe and combine multiple positions into one manageable weekly payment.",
+    "Struggling with merchant cash advance payments? MCAREVIVE helps business owners negotiate with lenders to reduce what they owe and combine multiple positions into one manageable weekly payment.",
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
