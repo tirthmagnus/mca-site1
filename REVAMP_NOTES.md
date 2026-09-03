@@ -40,3 +40,15 @@
 - Business story cards now open detailed story panels rather than acting as static images.
 - Removed visitor-facing staging photography/source copy.
 - Until durable storage is connected, Vercel submissions are retained in function logs as a staging safety net. Configure Supabase or CRM storage before final public launch.
+
+
+## Final visual polish pass
+- Rebuilt the 5-step case review with a connected visual stepper and animated transitions.
+- Styled inline validation with clear, compact alert states instead of plain text.
+- Redesigned Step 5 into labeled review cards with Edit actions.
+- Redesigned successful submission state with confirmation, formatted phone number, and next-step cards.
+- Rebuilt quick-review modal scrolling so the scrollbar no longer cuts through rounded corners.
+- Added a polished quick-modal success state.
+- Converted How It Works into an animated connected timeline: vertical on mobile, horizontal on desktop.
+- Chat launcher automatically hides when the primary case-review form is in view to prevent overlap.
+- Added extra mobile robustness for 320px+ widths, touch interactions, long text, inputs, dynamic viewport heights, and reduced motion.

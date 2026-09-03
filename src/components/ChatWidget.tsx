@@ -145,6 +145,7 @@ export default function ChatWidget() {
   const [sending, setSending] = useState(false);
   const [leadCaptured, setLeadCaptured] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [formInView, setFormInView] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -166,6 +167,24 @@ export default function ChatWidget() {
     const timer = setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 120);
     return () => clearTimeout(timer);
   }, [open, step]);
+
+  useEffect(() => {
+    const form = document.getElementById("apply");
+    if (!form) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const inView = entry.isIntersecting && entry.intersectionRatio > 0.12;
+        setFormInView(inView);
+        if (inView) {
+          setShowTooltip(false);
+          setOpen(false);
+        }
+      },
+      { threshold: [0, 0.12, 0.3] }
+    );
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, []);
 
   function append(role: Message["role"], content: string) {
     setMessages((current) => [...current, { role, content }]);
@@ -264,7 +283,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {!open && showTooltip && (
+      {!open && showTooltip && !formInView && (
         <div className="fixed bottom-24 right-5 z-[55] hidden max-w-[240px] items-start gap-2 rounded-2xl border border-[#d9d5ca] bg-[#fffdf8] px-4 py-3 text-sm leading-5 text-[#081522] shadow-[0_18px_45px_-20px_rgba(8,21,34,.5)] animate-[popIn_.2s_ease-out] sm:flex">
           <span>Questions about MCA payment pressure? Start here.</span>
           <button type="button" onClick={() => setShowTooltip(false)} aria-label="Dismiss" className="shrink-0 text-[#081522]/45 hover:text-[#081522]"><X size={14} /></button>
@@ -279,7 +298,7 @@ export default function ChatWidget() {
         }}
         aria-label={open ? "Close chat" : "Open chat"}
         aria-expanded={open}
-        className={`mobile-safe-bottom fixed right-3 z-[60] flex h-14 w-14 items-center justify-center rounded-full border border-[#c8862e] bg-[#e0a344] text-[#081522] shadow-[0_15px_40px_-15px_rgba(8,21,34,.75)] transition-transform hover:scale-105 sm:bottom-5 sm:right-5 sm:h-16 sm:w-16 ${open ? "" : "chat-bubble-pulse"}`}
+        className={`mobile-safe-bottom fixed right-3 z-[60] flex h-14 w-14 items-center justify-center rounded-full border border-[#c8862e] bg-[#e0a344] text-[#081522] shadow-[0_15px_40px_-15px_rgba(8,21,34,.75)] transition-all duration-200 hover:scale-105 sm:bottom-5 sm:right-5 sm:h-16 sm:w-16 ${open ? "" : "chat-bubble-pulse"} ${formInView ? "pointer-events-none translate-y-3 scale-90 opacity-0" : "opacity-100"}`}
       >
         {!open && <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#fffdf8] bg-[#081522]" />}
         {open ? <X size={23} strokeWidth={1.8} /> : <MessageCircleMore size={25} strokeWidth={1.7} />}
@@ -290,7 +309,7 @@ export default function ChatWidget() {
           <div className="flex shrink-0 items-center justify-between border-b border-white/10 bg-[#081522] px-4 py-3.5 text-white">
             <div>
               <div className="display text-sm font-semibold">MCAREVIVE Intake</div>
-              <div className="mt-0.5 text-[11px] text-white/60">Quick guided review, no AI bot</div>
+              <div className="mt-0.5 text-[11px] text-white/60">Quick confidential review</div>
             </div>
             {leadCaptured && (
               <span className="inline-flex items-center gap-1 rounded-full bg-[#e0a344] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[.08em] text-[#081522]">

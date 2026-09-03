@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -213,16 +213,38 @@ export function Solutions() {
 }
 
 export function HowItWorks() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.16 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="how" className="mx-auto max-w-7xl px-4 py-20 sm:px-8 sm:py-24">
       <SectionHeading kicker="Process" title="A clearer path from pressure to a decision." body="The first step is not signing up. It is understanding what you are dealing with." />
-      <div className="mt-12 grid gap-4 lg:grid-cols-4">
+      <div ref={ref} className={`process-track mt-12 ${visible ? "is-visible" : ""}`}>
         {STEPS.map((s, i) => (
-          <article key={s.title} className="relative rounded-2xl border border-line bg-cream p-6">
-            <span className="tabular text-xs font-bold text-amber">STEP {String(i + 1).padStart(2, "0")}</span>
-            <div className="mt-8 flex h-11 w-11 items-center justify-center rounded-full bg-ink text-white"><s.icon size={20} strokeWidth={1.7} /></div>
-            <h3 className="display mt-5 text-lg font-semibold">{s.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-ink/58">{s.body}</p>
+          <article key={s.title} className="process-step" style={{ "--step-delay": `${i * 120}ms` } as React.CSSProperties}>
+            <div className="process-rail" aria-hidden="true"><span /></div>
+            <div className="process-node"><s.icon size={21} strokeWidth={1.7} /></div>
+            <div className="process-copy">
+              <span className="tabular text-[10px] font-bold uppercase tracking-[.12em] text-[#89581c]">Step {String(i + 1).padStart(2, "0")}</span>
+              <h3 className="display mt-2 text-xl font-semibold tracking-[-.025em] text-ink">{s.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-ink/58">{s.body}</p>
+            </div>
           </article>
         ))}
       </div>
