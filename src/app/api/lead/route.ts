@@ -65,13 +65,11 @@ export async function POST(req: NextRequest) {
   }
 
   const durable = storageResult.durable || crmDelivered;
-  const vercelEnvironment = process.env.VERCEL_ENV;
-  const isVercelPreview = Boolean(vercelEnvironment && vercelEnvironment !== "production");
 
-  if (!durable && isVercelPreview) {
-    // Preview-only safety net. Vercel retains function logs, so a client's
-    // staging test submission is recoverable even before Supabase/CRM is
-    // connected. Do not use this as a production lead database.
+  if (!durable && process.env.VERCEL) {
+    // Staging safety net: until Supabase or a CRM webhook is connected, keep
+    // test submissions recoverable in Vercel function logs instead of silently
+    // discarding them. Replace this fallback with durable storage before launch.
     console.info(
       `[MCAREVIVE_STAGING_LEAD] ${JSON.stringify({ ...storageResult.lead, ip: "redacted" })}`
     );
@@ -81,21 +79,9 @@ export async function POST(req: NextRequest) {
         ok: true,
         remaining,
         leadId: storageResult.lead.id,
-        captureMode: "vercel_preview_log",
+        captureMode: "vercel_log",
       },
       { status: 201 }
-    );
-  }
-
-  if (!durable && process.env.VERCEL) {
-    // Never tell a production visitor their lead was saved when there is no
-    // durable destination. Connect Supabase or a confirmed CRM webhook first.
-    console.error("[lead] production lead destination is not configured");
-    return NextResponse.json(
-      {
-        error: "Online intake is temporarily unavailable. Please use the contact information shown on the site.",
-      },
-      { status: 503 }
     );
   }
 

@@ -90,10 +90,10 @@ export default function LeadForm({
   }
 
   const canAdvance =
-    (step === 1 && form.balanceRange) ||
-    (step === 2 && form.numberOfMcas && form.paymentFrequency && form.monthlyRevenue) ||
-    (step === 3 && form.firstName && form.lastName && form.businessName) ||
-    (step === 4 && form.phone && form.email && form.state);
+    step === 1 ||
+    step === 2 ||
+    (step === 3 && Boolean(form.firstName.trim())) ||
+    (step === 4 && Boolean(form.phone.trim()));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -123,9 +123,9 @@ export default function LeadForm({
   if (status === "done") {
     return (
       <div className="rounded-2xl border border-line bg-white p-8 text-center">
-        <h3 className="display text-xl font-semibold text-ink">You&apos;re all set</h3>
-        <p className="mt-2 text-ink/60">
-          Your request was received. A consultant can follow up using the contact permission you provided.
+        <h3 className="display text-xl font-semibold text-ink">Thank you, {form.firstName}.</h3>
+        <p className="mt-2 text-ink/65">
+          We received your information. One of our team members will review it and reach out at <strong>{form.phone}</strong>.
         </p>
       </div>
     );
@@ -158,7 +158,7 @@ export default function LeadForm({
 
       {step === 1 && (
         <ChoiceStep
-          label="Approximate outstanding MCA balance"
+          label="Approximate outstanding MCA balance (optional)"
           options={BALANCE_OPTIONS}
           value={form.balanceRange}
           onChange={(v) => update("balanceRange", v)}
@@ -168,21 +168,21 @@ export default function LeadForm({
       {step === 2 && (
         <div className="space-y-5">
           <ChoiceStep
-            label="Number of active MCAs"
+            label="Number of active MCAs (optional)"
             options={MCA_COUNT_OPTIONS}
             value={form.numberOfMcas}
             onChange={(v) => update("numberOfMcas", v)}
             grid
           />
           <ChoiceStep
-            label="Payment frequency"
+            label="Payment frequency (optional)"
             options={FREQUENCY_OPTIONS}
             value={form.paymentFrequency}
             onChange={(v) => update("paymentFrequency", v)}
             grid
           />
           <ChoiceStep
-            label="Approximate monthly business revenue"
+            label="Approximate monthly business revenue (optional)"
             options={REVENUE_OPTIONS}
             value={form.monthlyRevenue}
             onChange={(v) => update("monthlyRevenue", v)}
@@ -191,21 +191,18 @@ export default function LeadForm({
       )}
 
       {step === 3 && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          <TextInput label="First name" value={form.firstName} onChange={(v) => update("firstName", v)} required />
-          <TextInput label="Last name" value={form.lastName} onChange={(v) => update("lastName", v)} required />
-          <div className="sm:col-span-2">
-            <TextInput label="Business name" value={form.businessName} onChange={(v) => update("businessName", v)} required />
-          </div>
+        <div className="grid gap-4">
+          <TextInput label="Your name" value={form.firstName} onChange={(v) => update("firstName", v)} required />
+          <TextInput label="Business name (optional)" value={form.businessName} onChange={(v) => update("businessName", v)} />
         </div>
       )}
 
       {step === 4 && (
         <div className="grid gap-4 sm:grid-cols-2">
           <TextInput label="Phone" type="tel" value={form.phone} onChange={(v) => update("phone", v)} required />
-          <TextInput label="Email" type="email" value={form.email} onChange={(v) => update("email", v)} required />
+          <TextInput label="Email (optional)" type="email" value={form.email} onChange={(v) => update("email", v)} />
           <div className="sm:col-span-2">
-            <TextInput label="State" value={form.state} onChange={(v) => update("state", v)} required />
+            <TextInput label="State (optional)" value={form.state} onChange={(v) => update("state", v)} />
           </div>
         </div>
       )}
@@ -215,9 +212,9 @@ export default function LeadForm({
           <div className="rounded-lg border border-line bg-paper p-4 text-sm text-ink/70">
             <div className="font-semibold text-ink">Review</div>
             <div className="mt-1.5 space-y-1 break-words">
-              <div>{form.firstName} {form.lastName} · {form.businessName}</div>
-              <div>{form.phone} · {form.email} · {form.state}</div>
-              <div>Balance: {form.balanceRange.replace(/_/g, " ")} · MCAs: {form.numberOfMcas} · {form.paymentFrequency}</div>
+              <div>{form.firstName}{form.businessName ? ` · ${form.businessName}` : ""}</div>
+              <div>{form.phone}{form.email ? ` · ${form.email}` : ""}{form.state ? ` · ${form.state}` : ""}</div>
+              {(form.balanceRange || form.numberOfMcas || form.paymentFrequency) && <div>{form.balanceRange ? `Balance: ${form.balanceRange.replace(/_/g, " ")}` : ""}{form.numberOfMcas ? ` · MCAs: ${form.numberOfMcas}` : ""}{form.paymentFrequency ? ` · ${form.paymentFrequency}` : ""}</div>}
             </div>
           </div>
 

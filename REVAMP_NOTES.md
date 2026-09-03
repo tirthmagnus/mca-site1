@@ -30,3 +30,13 @@
 4. Add GA4 and/or Meta IDs only if the client actually wants those tracking tools.
 5. Have counsel review legal/consent wording against the exact service model, jurisdictions, fee structure, referral relationships, and communication practices.
 6. Consider shared rate limiting such as Upstash/Redis before meaningful paid traffic.
+
+## Final presentation fix pass
+- Name and phone are the only required lead-contact fields across the full form, quick modal, and guided chat.
+- Optional intake details can be skipped without blocking submission.
+- Quick review modal and chat use fully opaque foreground surfaces and stronger contrast to avoid blending into page content.
+- Mobile chat teaser is hidden on small screens to prevent content overlap; the launcher remains available.
+- Successful submissions stay visible with a clear thank-you and callback confirmation.
+- Business story cards now open detailed story panels rather than acting as static images.
+- Removed visitor-facing staging photography/source copy.
+- Until durable storage is connected, Vercel submissions are retained in function logs as a staging safety net. Configure Supabase or CRM storage before final public launch.

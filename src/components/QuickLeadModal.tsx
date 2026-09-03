@@ -62,7 +62,7 @@ export default function QuickLeadModal({
 
   return (
     <div
-      className="fixed inset-0 z-[70] overflow-y-auto bg-ink/72 px-3 py-4 backdrop-blur-md sm:px-4 sm:py-8"
+      className="fixed inset-0 z-[70] overflow-y-auto bg-[rgba(8,21,34,.82)] px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-8"
       onClick={onClose}
     >
       <div className="flex min-h-full items-start justify-center sm:items-center">
@@ -70,7 +70,7 @@ export default function QuickLeadModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="quick-lead-title"
-          className="w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[1.75rem] border border-white/15 bg-cream p-5 shadow-[0_35px_100px_-30px_rgba(0,0,0,.7)] animate-[popIn_.18s_ease-out] sm:max-h-[calc(100dvh-4rem)] sm:p-8"
+          className="w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-[1.75rem] border border-[#d7d1c5] bg-[#fffdf8] p-5 text-[#081522] shadow-[0_35px_100px_-24px_rgba(0,0,0,.78)] ring-1 ring-white/30 animate-[popIn_.18s_ease-out] sm:max-h-[calc(100dvh-4rem)] sm:p-8"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="mb-6 flex items-start justify-between gap-5">
@@ -93,8 +93,9 @@ export default function QuickLeadModal({
 
           {status === "done" ? (
             <div className="rounded-2xl border border-line bg-paper p-6 text-center">
-              <p className="display text-xl font-semibold text-ink">Request received.</p>
-              <p className="mt-2 text-sm leading-6 text-ink/60">A consultant can follow up using the contact permission you provided.</p>
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber/20 text-[#89581c]"><ShieldCheck size={24} /></div>
+              <p className="display mt-4 text-xl font-semibold text-ink">Thank you, {firstName}.</p>
+              <p className="mt-2 text-sm leading-6 text-ink/65">We received your information. One of our team members will review it and reach out at <strong>{phone}</strong>.</p>
               <button onClick={onClose} className="mt-5 min-h-11 rounded-full bg-ink px-6 text-sm font-bold text-white hover:bg-ink-2">Close</button>
             </div>
           ) : (
@@ -108,9 +109,9 @@ export default function QuickLeadModal({
                 autoComplete="off"
                 aria-hidden="true"
               />
-              <Field label="First name" value={firstName} onChange={setFirstName} autoComplete="given-name" />
-              <Field label="Phone number" value={phone} onChange={setPhone} type="tel" autoComplete="tel" />
-              <Field label="Business name" value={businessName} onChange={setBusinessName} autoComplete="organization" />
+              <Field label="Your name" value={firstName} onChange={setFirstName} autoComplete="name" required />
+              <Field label="Phone number" value={phone} onChange={setPhone} type="tel" autoComplete="tel" required />
+              <Field label="Business name (optional)" value={businessName} onChange={setBusinessName} autoComplete="organization" />
 
               <label className="flex items-start gap-3 rounded-2xl border border-line bg-paper p-4 text-[11px] leading-5 text-ink/62 sm:text-xs">
                 <input
@@ -149,18 +150,20 @@ function Field({
   onChange,
   type = "text",
   autoComplete,
+  required = false,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   autoComplete?: string;
+  required?: boolean;
 }) {
   return (
     <label className="block text-sm">
       <span className="mb-1.5 block font-semibold text-ink/68">{label}</span>
       <input
-        required
+        required={required}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -25,6 +26,7 @@ import {
   Target,
   TrendingDown,
   UserCheck,
+  X,
 } from "lucide-react";
 import { useLeadModal } from "./LeadModalContext";
 import { PHONE_DISPLAY, PHONE_TEL, hasPhone } from "@/lib/site";
@@ -71,9 +73,33 @@ const TRUST_POINTS = [
 ] as const;
 
 const CLIENT_STORIES = [
-  { industry: "Restaurant operator", detail: "Multiple weekly withdrawals", quote: "The conversation finally became about what the business could support, not just the next debit.", image: INDUSTRIES[0].image },
-  { industry: "Logistics company", detail: "Stacked MCA positions", quote: "Having one organized strategy made it easier to focus on customers, drivers, and payroll again.", image: INDUSTRIES[1].image },
-  { industry: "Medical practice", detail: "Cash-flow compression", quote: "What helped most was understanding the options and risks before making another financing decision.", image: INDUSTRIES[3].image },
+  {
+    industry: "Restaurant operator",
+    detail: "Multiple weekly withdrawals",
+    summary: "Several weekly withdrawals were compressing cash available for payroll, food costs, and rent.",
+    situation: "The business was still operating, but stacked payment obligations were beginning to control day-to-day decisions.",
+    review: "A useful review would organize the active obligations, payment cadence, cash-flow pressure, and contract terms before discussing possible paths.",
+    nextStep: "The immediate goal is clarity: understand the obligations together, identify realistic options, and decide what should happen next.",
+    image: INDUSTRIES[0].image,
+  },
+  {
+    industry: "Logistics company",
+    detail: "Stacked MCA positions",
+    summary: "Multiple MCA positions were drawing from the same operating revenue while fuel, insurance, and driver costs continued.",
+    situation: "The pressure was not one isolated payment. It was the combined effect of several withdrawals hitting the same cash flow.",
+    review: "A consolidated review would compare balances, payment frequency, operating needs, and the order in which obligations should be addressed.",
+    nextStep: "The business can then evaluate a coordinated strategy instead of reacting to each position separately.",
+    image: INDUSTRIES[1].image,
+  },
+  {
+    industry: "Medical practice",
+    detail: "Cash-flow compression",
+    summary: "A change in collections timing created a mismatch between incoming revenue and recurring financing withdrawals.",
+    situation: "The practice needed to protect payroll and operating continuity while understanding what options were available around its commercial obligations.",
+    review: "The starting point would be current cash flow, active agreements, balances, and any notices or escalation already received.",
+    nextStep: "With that information organized, the business can make a more informed decision about restructuring, negotiation, or another appropriate path.",
+    image: INDUSTRIES[3].image,
+  },
 ];
 
 const WHY_US = [
@@ -160,7 +186,6 @@ export function WhoWeHelp() {
             </article>
           ))}
         </div>
-        <p className="mt-4 text-[11px] text-ink/38">Staging photography sourced from Pexels. Replace with brand-approved photography before final launch if desired.</p>
       </div>
     </section>
   );
@@ -221,32 +246,73 @@ export function TrustSection() {
 }
 
 export function ClientStories() {
+  const [selectedStory, setSelectedStory] = useState<(typeof CLIENT_STORIES)[number] | null>(null);
+
   return (
-    <section id="results" className="bg-paper-2 py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-8">
-        <SectionHeading kicker="Story preview" title="The review section is ready for approved client proof." body="For staging, these cards demonstrate the final presentation style without pretending that unverified testimonials are real customer endorsements." />
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
-          {CLIENT_STORIES.map((c) => (
-            <article key={c.industry} className="premium-card overflow-hidden rounded-3xl">
-              <div className="relative h-44 overflow-hidden bg-ink">
-                <img src={c.image} alt={`${c.industry} staging visual`} loading="lazy" className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
-                <span className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-ink/75 px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-white backdrop-blur-sm">Staging review</span>
-              </div>
-              <div className="p-6 sm:p-7">
-                <Quote className="text-amber" size={27} strokeWidth={1.5} />
-                <p className="mt-5 text-lg leading-8 text-ink/78">“{c.quote}”</p>
-                <div className="mt-7 border-t border-line pt-4">
-                  <div className="text-sm font-bold text-ink">{c.industry}</div>
-                  <div className="mt-1 text-xs text-ink/45">{c.detail} · sample copy for client approval</div>
+    <>
+      <section id="results" className="bg-paper-2 py-20 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
+          <SectionHeading kicker="Business stories" title="See the situation behind the pressure, not just a headline." body="Every business is different. These examples show the kinds of MCA situations a confidential review can help organize before a business decides what to do next." />
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            {CLIENT_STORIES.map((c) => (
+              <button
+                key={c.industry}
+                type="button"
+                onClick={() => setSelectedStory(c)}
+                className="premium-card group overflow-hidden rounded-3xl text-left transition hover:-translate-y-1 hover:border-amber/70 hover:shadow-[0_28px_65px_-38px_rgba(8,21,34,.55)]"
+              >
+                <div className="relative h-44 overflow-hidden bg-ink">
+                  <img src={c.image} alt={`${c.industry} business`} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
+                  <span className="absolute bottom-4 left-4 text-xs font-bold uppercase tracking-[.12em] text-white/85">{c.detail}</span>
+                </div>
+                <div className="p-6 sm:p-7">
+                  <Quote className="text-amber" size={27} strokeWidth={1.5} />
+                  <h3 className="display mt-5 text-xl font-semibold text-ink">{c.industry}</h3>
+                  <p className="mt-3 text-sm leading-7 text-ink/65">{c.summary}</p>
+                  <div className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.1em] text-[#89581c]">View story <ArrowRight size={14} className="transition group-hover:translate-x-1" /></div>
+                </div>
+              </button>
+            ))}
+          </div>
+          <p className="mt-5 text-xs leading-5 text-ink/45">Illustrative business scenarios only. They are not promises of a particular result, savings amount, or timeline.</p>
+        </div>
+      </section>
+
+      {selectedStory && (
+        <div className="fixed inset-0 z-[80] overflow-y-auto bg-[rgba(8,21,34,.82)] px-3 py-5 backdrop-blur-sm sm:px-6 sm:py-10" onClick={() => setSelectedStory(null)}>
+          <div className="flex min-h-full items-center justify-center">
+            <article className="w-full max-w-2xl overflow-hidden rounded-[1.75rem] border border-[#d7d1c5] bg-[#fffdf8] shadow-[0_35px_100px_-24px_rgba(0,0,0,.78)]" onClick={(e) => e.stopPropagation()}>
+              <div className="relative h-48 overflow-hidden bg-ink sm:h-64">
+                <img src={selectedStory.image} alt={`${selectedStory.industry} business`} className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" />
+                <button type="button" onClick={() => setSelectedStory(null)} aria-label="Close story" className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-ink/75 text-white backdrop-blur-sm"><X size={18} /></button>
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7">
+                  <div className="text-[10px] font-bold uppercase tracking-[.14em] text-amber">Business scenario</div>
+                  <h3 className="display mt-2 text-2xl font-semibold">{selectedStory.industry}</h3>
+                  <p className="mt-1 text-sm text-white/65">{selectedStory.detail}</p>
                 </div>
               </div>
+              <div className="grid gap-6 p-5 sm:p-7">
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[.12em] text-[#89581c]">Situation</div>
+                  <p className="mt-2 text-sm leading-7 text-ink/68">{selectedStory.situation}</p>
+                </div>
+                <div className="border-t border-line pt-5">
+                  <div className="text-xs font-bold uppercase tracking-[.12em] text-[#89581c]">What a review would look at</div>
+                  <p className="mt-2 text-sm leading-7 text-ink/68">{selectedStory.review}</p>
+                </div>
+                <div className="border-t border-line pt-5">
+                  <div className="text-xs font-bold uppercase tracking-[.12em] text-[#89581c]">Next step</div>
+                  <p className="mt-2 text-sm leading-7 text-ink/68">{selectedStory.nextStep}</p>
+                </div>
+                <button type="button" onClick={() => { setSelectedStory(null); document.getElementById("apply")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} className="min-h-12 rounded-full bg-ink px-6 text-sm font-bold text-white">Request a confidential review</button>
+              </div>
             </article>
-          ))}
+          </div>
         </div>
-        <p className="mt-5 text-xs leading-5 text-ink/45">Before launch, replace these with verified, client-approved testimonials and any substantiated result data. Individual outcomes vary and are not guaranteed.</p>
-      </div>
-    </section>
+      )}
+    </>
   );
 }
 
